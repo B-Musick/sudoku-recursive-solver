@@ -62,7 +62,19 @@ let createSudokuBoard =(boardContainer,boardDimension)=>{
             }
             sudokuPreAnswer.push(row); // Add row to array
         }
-        console.log(sudokuPreAnswer);
+        
+        solveSudoku(sudokuPreAnswer);
+        for (let i = 0; i < boardDimension; i++) {
+            for (let j = 0; j < boardDimension; j++) {
+                let cell = document.createElement('input');
+                cell.value = sudokuPreAnswer[i][j];
+                cell.setAttribute('class', 'cell');
+                cell.setAttribute('id', 'row-' + i + '-' + 'col-' + j)
+                boardContainer.appendChild(cell);
+            }
+        }
+        questionContainer.appendChild(boardContainer);
+
     });
 
 
@@ -75,21 +87,63 @@ let solveSudoku =(board)=>{
         // Loop throught the rows
         for(let j = 0; j<board.length;j++){
             // Loop through columns
+            if(board[i][j]==0){
+                // If place needs a value input
+                for(let cellVal = 1;cellVal<=board.length;cellVal++){
+                    if(checkRow(board[i],cellVal)&&checkCol(board[j],cellVal)&&checkSquare(board,i,j,cellVal)){
+                        board[i][j]=cellVal;
+                        console.log(board);
+
+                        if(solveSudoku(board)){
+
+                            return true;
+                        };
+                        board[i][j]=0;
+                    }
+                }
+                return false;
+            }
 
         }
     }
+    return true;
+    
 }
 
-let checkRow=()=>{
+let checkRow=(row,val)=>{
     // Check that the row doesnt contain the same number
+    return !row.includes(val);
 }
 
-let checkCol = () => {
+let checkCol = (col, val) => {
     // Check that the col doesnt contain the same number
+    let useValue = true;
+    for (let i = 0; i < this.dimension; i++) {
+        // Loop through all values in the column and if find duplicate then false
+        if (board[i][col] == value) {
+            useValue = false;
+        }
+    }
+    return useValue;
 }
 
-let checkSquare=()=>{
+let checkSquare=(board,outerRow,outerCol, value)=>{
+    let innerDimension = Math.sqrt(board.length);
     // Check that inner box doesnt contain any doubles
+    let sectionRowDivision = parseInt(outerRow / innerDimension);
+    let sectionRow = sectionRowDivision * innerDimension; // Zero to which section of row
+
+    let sectionColDivision = parseInt((outerCol) / innerDimension);
+    let sectionCol = sectionColDivision * innerDimension; // Zero to the section of col
+
+    // This will make sure the surrounding square box doesnt hold the value
+    for (let row = 0; row < innerDimension; row++) {
+        for (let col = 0; col < innerDimension; col++) {
+            // If value is found in the box then return false
+            if (board[sectionRow + row][sectionCol + col] == value) return false;
+        }
+    }
+    return true; // If true returned then can use the value
 }
 
 
