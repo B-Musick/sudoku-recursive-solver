@@ -2,9 +2,21 @@
     --grid-rows:1;
     --grid-cols:1;
 }
+body{
+    background-color: rgb(36, 61, 61);
+    color: white;
+}
 .cell{
-
-    border: 3px solid black;
+    border: 3px solid white;
+    background-color: rgb(36, 61, 61);
+    color: white;
+}
+#sudoku-title{
+    text-align: center;
+}
+#question-container{
+    text-align: center;
+    padding: 2%;
 }
 /* Container for both skeleton and answer */
 #boards-container{
@@ -18,5 +30,6 @@
     grid-template-rows: repeat(var(--grid-rows), 25px);
     grid-template-columns: repeat(var(--grid-cols), 25px);
 }
+
 
 

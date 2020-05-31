@@ -16,20 +16,34 @@ class Sudoku {
     firstQuestion() {
         this.addQuestion("What size dimension is the board (4 for 4x4 board, etc.)");
         this.addQuestionInput();
-        this.questionSubmit(this.firstQuestionEvent,'first-q-submit');
+        this.questionSubmit(this.firstQuestionEvent, 'first-q-submit', 'submit');
     }
 
     addQuestionInput(){
         // Add input to first question
-        this.dimensionInput.setAttribute('type', 'text');
+        this.dimensionInput.setAttribute('type', 'number');
         this.questionContainer.appendChild(this.dimensionInput);
+    }
+
+    isSquare = (n) => {
+        // Used in firstQuestionEvent to make sure value is square before creating board
+        return n > 0 && Math.sqrt(n) % 1 === 0;
     }
 
     firstQuestionEvent = () => {
         this.questionContainer.innerHTML = "";
         this.dimension = this.dimensionInput.value; // Set class board dimension
-        this.createBoard();
+        if (this.isSquare(this.dimension)) {
+            this.createBoard();
+        }else{
+            // If the dimensions arent valid
+            this.newSolver();
+            let errorMessage = document.createElement('p');
+            errorMessage.textContent = "Please input valid dimensions."
+            this.questionContainer.appendChild(errorMessage);
+        }
     }
+
 
     /************************** QUESTION/ INFO LOGIC **************************/
     addQuestion(text) {
@@ -39,11 +53,11 @@ class Sudoku {
         this.questionContainer.appendChild(firstQuestion);
     }
 
-    questionSubmit(event,id){
+    questionSubmit(event,id,buttonText){
         // Add submit buttons to first question and skeleton
         let firstQSubmit = document.createElement('button');
         firstQSubmit.setAttribute('id',id);
-        firstQSubmit.innerHTML = 'Submit';
+        firstQSubmit.innerHTML = buttonText;
         this.questionContainer.appendChild(firstQSubmit);
         
         firstQSubmit.addEventListener('click', () => {
@@ -65,15 +79,16 @@ class Sudoku {
         in their respective cells, then click submit.`);
 
         // Create board submit button
-        this.questionSubmit(this.setBoardEvent, 'board-submit');
+        this.questionSubmit(this.setBoardEvent, 'board-submit','solve');
     }
 
     setBoardEvent = () => {
         // Called in createBoard() as parameter to questionSubmit()
+        this.questionContainer.innerHTML = ""; // Clear the question container
         let sudokuPreAnswer = this.setBoardSkeleton(); // Get skeleton into array
         this.recursiveSolver(sudokuPreAnswer);
         this.printBoardToScreen(sudokuPreAnswer, true);
-        this.questionContainer.innerHTML = ""; // Clear the question container
+        this.questionSubmit(this.newSolver,'new-solve-submit','solve another');
     }
 
     setBoardSkeleton() {
@@ -92,6 +107,8 @@ class Sudoku {
     }
 
     printBoardToScreen(sudokuBoard, read) {
+        this.board.innerHTML = ""; // Clear board container
+
         let skeleton = document.createElement('div');
         skeleton.setAttribute('class', 'board-container');
 
@@ -108,6 +125,13 @@ class Sudoku {
         this.board.appendChild(skeleton);
     }
 
+    newSolver=()=>{
+        this.questionContainer.innerHTML="";
+        this.board.innerHTML="";
+        let sudoku = new Sudoku();
+        sudoku.solve();
+
+    }
     /************************** PUZZLE SOLVING LOGIC **************************/
 
     recursiveSolver(preBoard) {
