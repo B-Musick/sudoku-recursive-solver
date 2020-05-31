@@ -64,11 +64,13 @@ let createSudokuBoard =(boardContainer,boardDimension)=>{
         }
         
         solveSudoku(sudokuPreAnswer);
+        // Print new board
         for (let i = 0; i < boardDimension; i++) {
             for (let j = 0; j < boardDimension; j++) {
                 let cell = document.createElement('input');
                 cell.value = sudokuPreAnswer[i][j];
                 cell.setAttribute('class', 'cell');
+                cell.readOnly=true;
                 cell.setAttribute('id', 'row-' + i + '-' + 'col-' + j)
                 boardContainer.appendChild(cell);
             }
@@ -107,7 +109,6 @@ let solveSudoku =(board)=>{
         }
     }
     return true;
-    
 }
 
 let checkRow=(row,val)=>{
