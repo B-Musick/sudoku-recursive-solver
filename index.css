@@ -1,23 +1,30 @@
 :root{
     --grid-rows:1;
     --grid-cols:1;
+    --background-color:rgb(67, 79, 50);
+    --font-color:white;
 }
+
 body{
-    background-color: rgb(36, 61, 61);
-    color: white;
+    background-color: var(--background-color);
+    color: var(--font-color);
 }
+
 .cell{
-    border: 3px solid white;
-    background-color: rgb(36, 61, 61);
-    color: white;
+    border: 3px solid var(--font-color);
+    background-color: var(--background-color);
+    color: var(--font-color);
 }
+
 #sudoku-title{
     text-align: center;
 }
+
 #question-container{
     text-align: center;
     padding: 2%;
 }
+
 /* Container for both skeleton and answer */
 #boards-container{
     display: flex;
@@ -29,6 +36,16 @@ body{
     display: grid;
     grid-template-rows: repeat(var(--grid-rows), 25px);
     grid-template-columns: repeat(var(--grid-cols), 25px);
+}
+
+input{
+    outline: none;
+}
+
+button{
+    text-transform: uppercase;
+    background-color: rgb(32, 38, 24);
+    color: var(--font-color);
 }
 
 

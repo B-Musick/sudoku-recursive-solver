@@ -145,7 +145,6 @@ class Sudoku {
                     for (let cellVal = 1; cellVal <= preBoard.length; cellVal++) {
                         if (this.checkRow(preBoard[i], cellVal) && this.checkCol(preBoard,j, cellVal) && this.checkSquare(preBoard, i, j, cellVal)) {
                             preBoard[i][j] = cellVal;
-                            console.log(preBoard);
                             if (this.recursiveSolver(preBoard)) {
                                 // If upstream returns true, then pass it down
                                 return true;
@@ -202,3 +201,10 @@ class Sudoku {
 
 let sudoku = new Sudoku();
 sudoku.solve();
+
+/*
+https://css-tricks.com/updating-a-css-variable-with-javascript/
+https://stackoverflow.com/questions/57550082/creating-a-16x16-grid-using-javascript
+https://stackoverflow.com/questions/30919111/whats-the-best-way-in-javascript-to-test-if-a-given-parameter-is-a-square-numbe
+https://stackoverflow.com/questions/3397113/how-to-remove-focus-border-outline-around-text-input-boxes-chrome
+*/
